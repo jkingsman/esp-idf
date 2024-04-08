@@ -2334,6 +2334,13 @@ esp_err_t esp_netif_dhcps_option_api(esp_netif_api_msg_t *msg)
                 }
                 break;
             }
+            case ESP_NETIF_CAPTIVEPORTAL_URI: {
+                /* unlike other flags/constant-sized IP addresses, we need to allocate for the URI */
+                char* captiveportal_uri = (char*) malloc((opt->len+1)*sizeof(char));
+                strcpy(captiveportal_uri, opt->val);
+                opt_info = captiveportal_uri;
+                break;
+            }
 
             default:
                 break;
