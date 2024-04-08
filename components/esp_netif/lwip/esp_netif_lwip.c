@@ -2246,7 +2246,6 @@ esp_err_t esp_netif_dhcps_option_api(esp_netif_api_msg_t *msg)
         if (dhcps_status == ESP_NETIF_DHCP_STARTED) {
             return ESP_ERR_ESP_NETIF_DHCP_ALREADY_STARTED;
         }
-
         switch (opt->id) {
             case IP_ADDRESS_LEASE_TIME: {
                 if (*(uint32_t *)opt->val != 0) {
@@ -2332,6 +2331,13 @@ esp_err_t esp_netif_dhcps_option_api(esp_netif_api_msg_t *msg)
                 } else {
                     *(uint8_t *)opt_info &= ((~OFFER_DNS) & 0xFF);
                 }
+                break;
+            }
+            case ESP_NETIF_CAPTIVEPORTAL_URI: {
+                /* unlike other flags/constant-sized IP addresses, we need to allocate for the URI */
+                char* captiveportal_uri = (char*) malloc((opt->len+1)*sizeof(char));
+                strcpy(captiveportal_uri, opt->val);
+                opt_info = captiveportal_uri;
                 break;
             }
 

@@ -303,6 +303,7 @@ err_t dhcps_set_option_info(dhcps_t *dhcps, u8_t op_id, void *opt_info, u32_t op
 
         case CAPTIVEPORTAL_URI:
             dhcps->dhcps_captiveportal_uri = (char *)opt_info;
+            DHCPS_LOG("dhcps: writing; length is %d\n", strlen((char *)opt_info));
             break;
 
         default:
@@ -483,11 +484,13 @@ static u8_t *add_offer_options(dhcps_t *dhcps, u8_t *optptr)
 
     if (dhcps->dhcps_captiveportal_uri) {
         size_t length = strlen(dhcps->dhcps_captiveportal_uri);
+        DHCPS_LOG("dhcps: appending; length is %d\n", length);
 
         *optptr++ = DHCP_OPTION_CAPTIVEPORTAL_URI;
         *optptr++ = length;
         for (i = 0; i < length; i++)
         {
+            DHCPS_LOG("appending char #%lu: %c AKA %x\n", i, dhcps->dhcps_captiveportal_uri[i], dhcps->dhcps_captiveportal_uri[i]);
             *optptr++ = dhcps->dhcps_captiveportal_uri[i];
         }
     }
