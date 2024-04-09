@@ -183,7 +183,7 @@ void app_main(void)
     #if CONFIG_ESP_ENABLE_DHCP_CAPTIVEPORTAL
         dhcp_set_captiveportal_url();
     #endif
-    
+
     // Start the server for the first time
     start_webserver();
 
